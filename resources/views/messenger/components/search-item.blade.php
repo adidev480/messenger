@@ -1,4 +1,4 @@
-                        <div class="wsus__user_list_item">
+                        <div class="wsus__user_list_item messenger-list-item" data-id="{{ $record->id }}">
                             <div class="img">
                                 <img src="{{ asset($record->avatar) }}" alt="User" class="img-fluid">
                                 {{-- <span class="active"></span> --}}
