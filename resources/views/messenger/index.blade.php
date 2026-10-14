@@ -25,7 +25,7 @@
 
             <div class="wsus__chat_area_body">
 
-                <div class="wsus__single_chat_area">
+                {{-- <div class="wsus__single_chat_area">
                     <div class="wsus__single_chat">
                         <p class="messages">Hi, How are you ?</p>
                         <span class="time"> 5h ago</span>
@@ -62,44 +62,31 @@
                         <span class="time"> 5h ago</span>
                         <a class="action" href="#"><i class="fas fa-trash"></i></a>
                     </div>
-                </div>
+                </div> --}}
 
 
 
 
-                <div class="wsus__single_chat_area">
-                    <div class="wsus__single_chat chat_right">
-                        <div class="pre_loader">
-                            <div class="spinner-border text-light" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-                        <a class="venobox" data-gall="gallery01" href="{{ asset('assets/images/chat_img.png') }}">
-                            <img src="{{ asset('assets/images/chat_img.png') }}" alt="gallery1" class="img-fluid w-100">
-                        </a>
-                        <span class="time"> 5h ago</span>
-                        <a class="action" href="#"><i class="fas fa-trash"></i></a>
-                    </div>
-                </div>
+
 
             </div>
 
-            {{-- <div class="wsus__chat_area_footer">
+            <div class="wsus__chat_area_footer">
                 <div class="footer_message">
-                    <!-- <div class="img">
-                        <img src="{{ asset('assets/images/chat_img.png') }}" alt="User" class="img-fluid">
-                        <span><i class="far fa-times"></i></span>
-                    </div> -->
-                    <form action="#">
+                    <div class="img d-none attachment-block">
+                        <img src="" alt="User" class="img-fluid attachment-preview">
+                        <span class="cancel-attachment"><i class="far fa-times"></i></span>
+                    </div>
+                    <form action="#" class="message-form" enctype="multipart/form-data">
                         <div class="file">
                             <label for="file"><i class="far fa-plus"></i></label>
-                            <input id="file" type="file" hidden>
+                            <input id="file" type="file" hidden class="attachment-input" name="attachment" accept="image/*">
                         </div>
-                        <textarea id="example1" rows="1" placeholder="Type a message.."></textarea>
-                        <button><i class="fas fa-paper-plane"></i></button>
+                        <textarea id="example1" rows="1" placeholder="Type a message.." name="message" class="message-input"></textarea>
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
                     </form>
                 </div>
-            </div> --}}
+            </div>
         </div>
 
         @include('messenger.layouts.user-info-sidebar')

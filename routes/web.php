@@ -27,4 +27,6 @@ Route::group(['middleware' => 'auth'], function(){
     // search route
     Route::get('messenger/search', [MessengerController::class, 'search'])->name('messenger.search');
     Route::get('messenger/id-info', [MessengerController::class, 'fetchIdInfo'])->name('messenger.id-info');
+    // send message
+    Route::post('messenger/send-message', [MessengerController::class, 'sendMessage'])->name('messenger.send-message');
 });
