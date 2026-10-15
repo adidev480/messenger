@@ -22,9 +22,20 @@ function enableChatBoxLoader(){
 }
 
 function disableChatBoxLoader(){
+    $(".wsus__chat_app").removeClass('show_info')
     $(".wsus__message_paceholder").addClass("d-none");
+    $(".wsus__message_paceholder_blank").addClass("d-none");
 
 }
+
+// function showChatBox(){
+//     $(".wsus__message_paceholder.blank").addClass("d-none");
+// }
+
+// function hideChatBox(){
+//     $(".wsus__message_paceholder.blank").removeClass("d-none");
+
+// }
 
 function imagePreview(input, selector){
     if(input.files && input.files[0]){
@@ -128,6 +139,8 @@ function IDinfo(id) {
             enableChatBoxLoader();
         },
         success: function(data) {
+            //fetch messages
+            fetchMessages(data.fetch.id, true);
             $(".messenger-header").find("img").attr("src", data.fetch.avatar);
             $(".messenger-header").find("h4").text(data.fetch.name);
 
@@ -135,7 +148,6 @@ function IDinfo(id) {
             $(".messenger-info-view").find(".user_name").text(data.fetch.name);
             $(".messenger-info-view").find(".user_unique_name").text(data.fetch.user_name);
             NProgress.done();
-            disableChatBoxLoader();
 
         },
         error: function(xhr, status, error) {
@@ -175,6 +187,8 @@ function sendMessage() {
                 }else{
                     messageBoxContainer.append(sendTempMessageCard(inputValue, tempID));
                 }
+
+                scrollToBottom(messageBoxContainer);
                 messageFormReset();
             },
             success: function(data) {
@@ -222,7 +236,7 @@ function sendTempMessageCard(message, tempId, attachment = false) {
 
 function messageFormReset() {
     $(".attachment-block").addClass("d-none");
-    $(".emojionearea-editor").text(" ");
+    $(".emojionearea-editor").text("");
     messageForm.trigger("reset");
 }
 
@@ -231,7 +245,81 @@ function messageFormReset() {
 
 // }
 
+/*
+*-----------------------------------------------
+*Fetch Messages from database
+*-----------------------------------------------
+*/
+let messagesPage = 1;
+let noMoreMessages = false;
+let messagesLoading = false;
+function fetchMessages(id, newFetch = false) {
+    if(newFetch){
+        messagesPage = 1;
+        noMoreMessages = false;
+    }
+    if(!noMoreMessages && !messagesLoading) {
+        $.ajax({
+            method: "GET",
+            url: "/messenger/fetch-messages",
+            data: {
+                _token: csrf_token,
+                id: id,
+                page: messagesPage
+            },
+            beforeSend: function(){
+                messagesLoading = true;
+                let loader = `
+                        <div class="text-center messages-loader">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div
+                        `;
+                messageBoxContainer.prepend(loader);
+            },
+            success: function(data) {
+                messagesLoading = false;
+                //remove message loader
+                messageBoxContainer.find(".messages-loader").remove();
+                if(messagesPage == 1) {
+                    messageBoxContainer.html(data.messages);
+                    scrollToBottom(messageBoxContainer)
+                }else{
+                    const lastMsg = $(messageBoxContainer).find(".message-card").first();
+                    const curOffset = lastMsg.offset().top - messageBoxContainer.scrollTop();
+                    messageBoxContainer.prepend(data.messages);
 
+                    messageBoxContainer.scrollTop(lastMsg.offset().top - curOffset);
+                }
+
+                // pagination lock and page increment
+                noMoreMessages = messagesPage >= data?.last_page;
+                if(!noMoreMessages) messagesPage += 1;
+
+                disableChatBoxLoader();
+
+
+            },
+            error: function(xhr, status, error) {
+
+            }
+        })
+    }
+
+}
+
+/*
+*-----------------------------------------------
+*Slide to bottom
+*-----------------------------------------------
+*/
+
+function scrollToBottom(container) {
+    $(container).stop().animate({
+        scrollTop: $(container)[0].scrollHeight
+    })
+}
 /*
 *-----------------------------------------------
 *On Dom Load
@@ -283,5 +371,11 @@ $(document).ready(function(){
     $(".cancel-attachment").on('click', function() {
         messageFormReset();
     })
+
+    // message pagination
+    actionOnScroll(".wsus__chat_area_body", function(){
+        fetchMessages(getMessengerId());
+    }, true)
+
 
 })

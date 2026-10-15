@@ -1,20 +1,24 @@
 @extends('messenger.layouts.app')
 @section('content')
-    <section class="wsus__chat_app">
+    <section class="wsus__chat_app show_info">
 
         @include('messenger.layouts.user-list-sidebar')
 
-        <div class="wsus__chat_area">
+        <div class="wsus__chat_area ">
 
             <div class="wsus__message_paceholder d-none"></div>
+            <div class="wsus__message_paceholder_blank d-flex justify-content-center align-items-center">
+                <span class="select_a_user">Select a user to start conversation</span>
+
+            </div>
 
             <div class="wsus__chat_area_header">
                 <div class="header_left messenger-header">
                     <span class="back_to_list">
                         <i class="fas fa-arrow-left"></i>
                     </span>
-                    <img src="{{ asset('assets/images/author_img_2.jpg') }}" alt="User" class="img-fluid">
-                    <h4>Jubaydul islam</h4>
+                    <img src="" alt="User" class="img-fluid">
+                    <h4></h4>
                 </div>
                 <div class="header_right">
                     <a href="#" class="favourite"><i class="fas fa-star"></i></a>
