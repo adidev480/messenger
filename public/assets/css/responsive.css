@@ -1,11 +1,11 @@
 @media (min-width: 1400px) and (max-width: 1600px) {
-    .wsus__user_list_area_height {
+    /* .wsus__user_list_area_height {
         max-height: 400px;
-    }
+    } */
 
-    .wsus__chat_area_body {
+    /* .wsus__chat_area_body {
         height: 675px;
-    }
+    } */
 
     .wsus__chat_area {
         width: 50%;
@@ -56,18 +56,18 @@
         width: 35%;
     }
 
-    .wsus__user_list_area_height {
+    /* .wsus__user_list_area_height {
         max-height: 400px;
-    }
+    } */
 
     .wsus__single_chat .venobox img {
         width: 200px !important;
         height: 130px !important;
     }
 
-    .wsus__chat_area_body {
+    /* .wsus__chat_area_body {
         height: 670px;
-    }
+    } */
 
     .wsus__chat_info_gallery li {
         width: 48%;
@@ -102,13 +102,13 @@
         right: 20px;
     }
 
-    .wsus__user_list_area_height {
+    /* .wsus__user_list_area_height {
         max-height: 350px;
-    }
+    } */
 
-    .wsus__chat_area_body {
+    /* .wsus__chat_area_body {
         height: 620px;
-    }
+    } */
 
     .wsus__chat_info_gallery li {
         width: 31%;
@@ -152,9 +152,9 @@
         width: 60% !important;
     }
 
-    .wsus__chat_area_body {
+    /* .wsus__chat_area_body {
         height: 620px;
-    }
+    } */
 
     .wsus__single_chat .venobox img {
         width: 180px !important;
@@ -165,9 +165,9 @@
         max-width: 140px;
     }
 
-    .wsus__user_list_area_height {
+    /* .wsus__user_list_area_height {
         max-height: 350px;
-    }
+    } */
 
     .show_small_info .wsus__chat_area {
         display: none;
@@ -206,9 +206,9 @@
         z-index: 9999;
     }
 
-    .wsus__user_list_area_height {
+    /* .wsus__user_list_area_height {
         max-height: 370px;
-    }
+    } */
 
     .wsus__chat_area {
         width: 100% !important;
@@ -227,9 +227,9 @@
         height: 100px !important;
     }
 
-    .wsus__chat_area_body {
+    /* .wsus__chat_area_body {
         height: 660px;
-    }
+    } */
 
     .wsus__chat_area_footer {
         padding: 10px;
@@ -284,9 +284,9 @@
         width: 35%;
     }
 
-    .wsus__user_list_area_height {
+    /* .wsus__user_list_area_height {
         max-height: 370px;
-    }
+    } */
 
     .wsus__chat_area {
         width: 100% !important;
@@ -325,9 +325,9 @@
         height: 100px !important;
     }
 
-    .wsus__chat_area_body {
+    /* .wsus__chat_area_body {
         height: 670px;
-    }
+    } */
 
     .emojionearea .emojionearea-picker.emojionearea-picker-position-top {
         left: -120px;

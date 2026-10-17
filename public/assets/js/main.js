@@ -120,7 +120,7 @@ $(function () {
 
 
 
-    // Heght adjustment
+    // Height adjustment
     $(document).ready(function () {
         function adjustHeight() {
             var windowHeight = $(window).height() - 120;
