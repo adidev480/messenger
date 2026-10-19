@@ -1073,7 +1073,7 @@ button {
     flex-wrap: wrap;
     gap: 6px;
     padding: 20px 6px;
-    height: 600px;
+    height: 400px;
     overflow-y:scroll;
 
 }
