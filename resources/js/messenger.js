@@ -143,6 +143,7 @@ function IDinfo(id) {
         success: function(data) {
             //fetch messages
             fetchMessages(data.fetch.id, true);
+            data.favourite > 0 ? $('.favourite').addClass('active') : $('.favourite').removeClass('active');
             $(".messenger-header").find("img").attr("src", data.fetch.avatar);
             $(".messenger-header").find("h4").text(data.fetch.name);
 
@@ -411,6 +412,53 @@ function makeSeen(status){
 }
 
 
+/*
+*-----------------------------------------------
+*Favourite
+*-----------------------------------------------
+*/
+function star(user_id){
+    $(".favourite").toggleClass("active");
+    $.ajax({
+        method: "POST",
+        url: "messenger/favourite",
+        data: {
+            _token: csrf_token,
+            id: user_id
+        },
+        success: function(data) {
+            if(data.status == 'added'){
+                notyf.success("Added to favourite list!");
+            }else{
+                notyf.success("Removed from favourite list!");
+            }
+        },
+        error: function(xhr, status, error) {
+
+        }
+    })
+}
+
+/*
+*-----------------------------------------------
+*Get Favourite Users
+*-----------------------------------------------
+*/
+// function fetchFavouriteList(){
+//     $.ajax({
+//         method: "POST",
+//         url: "messenger/fetch-favourite",
+//         data: {},
+//         success: function(data) {
+//             $(".favourite_user_slider").html(data.favourite_list);
+//         },
+//         error: function(xhr, status, error) {
+
+//         }
+//     })
+// }
+
+
 function updateSelectedContent(user_id){
     $(".messenger-list-item").removeClass("active");
     $(`.messenger-list-item[data-id="${user_id}"]`).addClass("active");
@@ -437,6 +485,8 @@ function scrollToBottom(container) {
 $(document).ready(function(){
 
     getContacts();
+
+    // fetchFavouriteList();
 
     if(window.innerWidth < 768){
         $("body").on('click','.messenger-list-item', function(){
@@ -505,5 +555,9 @@ $(document).ready(function(){
         getContacts();
     })
 
-
+    // add/remove favourite
+    $(".favourite").on('click', function(e){
+        e.preventDefault();
+        star(getMessengerId());
+    })
 })

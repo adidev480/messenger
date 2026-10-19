@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favourite;
 use App\Models\Message;
 use App\Models\User;
 use App\Traits\FileUploadTrait;
@@ -15,7 +16,8 @@ class MessengerController extends Controller
     use FileUploadTrait;
 
     function index() : View {
-        return view('messenger.index');
+        $favouriteList = Favourite::with('user:id,name,avatar')->where('user_id', Auth::user()->id)->get();
+        return view('messenger.index', compact('favouriteList'));
     }
 
     /** Search user profiles */
@@ -46,9 +48,10 @@ class MessengerController extends Controller
     //fetch userby id
     function fetchIdInfo(Request $request) {
         $fetch = User::where('id', $request['id'])->first();
-
+        $favourite = Favourite::where(['user_id' => Auth::user()->id, 'favourite_id' => $fetch->id])->exists();
         return response()->json([
-            'fetch' => $fetch
+            'fetch' => $fetch,
+            'favourite' => $favourite,
         ]);
     }
 
@@ -180,6 +183,35 @@ class MessengerController extends Controller
         ->where('seen', 0)->update(['seen' => 1]);
 
         return true;
+    }
+
+    //add/remove to favourite list
+    function favourite(Request $request){
+        $query = Favourite::where(['user_id' => Auth::user()->id, 'favourite_id' => $request->id]);
+        $favouriteStatus = $query->exists();
+        if(!$favouriteStatus){
+            $star = new Favourite();
+            $star->user_id = Auth::user()->id;
+            $star->favourite_id = $request->id;
+            $star->save();
+            return response(['status' => 'added']);
+        }else{
+            $query->delete();
+            return response(['status' => 'removed']);
+        }
+    }
+
+    //fetch favourite item list
+    function fetchFavouritesList() {
+        $list = Favourite::with('user:id,name,avatar')->where('user_id', Auth::user()->id)->get();
+        $favourites = "";
+        foreach($list as $item){
+            $favourites .= view('messenger.components.favourite-item', compact('item'));
+        }
+
+        return response()->json([
+            'favourite_list' => $favourites
+        ]);
     }
 
 }
