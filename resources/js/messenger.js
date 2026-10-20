@@ -235,7 +235,7 @@ function sendTempMessageCard(message, tempId, attachment = false) {
                     ${message.length > 0 ? `<p class="messages">${message}</p>` : ''}
 
                     <span class="clock"><i class="fas fa-clock"></i> Now</span>
-                    <a class="action" href="#"><i class="fas fa-trash"></i></a>
+
                 </div>
             </div>
         `
@@ -244,7 +244,7 @@ function sendTempMessageCard(message, tempId, attachment = false) {
                     <div class="wsus__single_chat chat_right">
                         <p class="messages">${message}</p>
                         <span class="clock"><i class="fas fa-clock"></i> Now</span>
-                        <a class="action" href="#"><i class="fas fa-trash"></i></a>
+
                     </div>
                 </div>`
     }
@@ -469,6 +469,42 @@ function star(user_id){
 //     })
 // }
 
+/*
+*-----------------------------------------------
+*Delete Message
+*-----------------------------------------------
+*/
+
+function deleteMessage(message_id){
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: 'POST',
+                    url: '/messenger/delete-message',
+                    data: {_token: csrf_token, message_id: message_id},
+                    beforeSend: function(){
+                        $(`.message-card[data-id="${message_id}"]`).remove();
+                    },
+                    success: function(data) {
+                        updateContactItem(getMessengerId());
+                    },
+                    error: function(xhr, status, error) {
+
+                    }
+                })
+            }
+        });
+}
+
+
 
 function updateSelectedContent(user_id){
     $(".messenger-list-item").removeClass("active");
@@ -570,5 +606,13 @@ $(document).ready(function(){
     $(".favourite").on('click', function(e){
         e.preventDefault();
         star(getMessengerId());
+    })
+
+    // delete message
+    $("body").on('click', '.dlt-message', function(e){
+        e.preventDefault();
+        let id = $(this).data('id');
+
+        deleteMessage(id);
     })
 })
