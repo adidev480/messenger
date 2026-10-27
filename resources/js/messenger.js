@@ -11,6 +11,7 @@ const messageForm = $(".message-form"),
       messageBoxContainer = $(".wsus__chat_area_body"),
       auth_id = $("meta[name=auth_id]").attr("content"),
       csrf_token = $("meta[name=csrf_token]").attr("content"),
+      url = $("meta[name=url]").attr("content"),
       messengerContactBox = $(".messenger-contacts");
 const getMessengerId = () => $("meta[name=id]").attr("content");
 const setMessengerId = (id) => $("meta[name=id]").attr("content",id);
@@ -249,6 +250,29 @@ function sendTempMessageCard(message, tempId, attachment = false) {
                 </div>`
     }
 
+}
+
+function receiveMessageCard(e) {
+    if(e.attachment) {
+       return `
+            <div class="wsus__single_chat_area message-card" data-id="${e.id}">
+                <div class="wsus__single_chat">
+                    <a class="venobox" data-gall="gallery${e.id}" href="${url + e.attachment}">
+                        <img src="${url + e.attachment}" alt="${url + e.attachment}" class="img-fluid w-100">
+                    </a>
+                    ${e.body?.length > 0 ? `<p class="messages">${e.body}</p>` : ''}
+
+                </div>
+            </div>
+        `
+    } else {
+            return `<div class="wsus__single_chat_area message-card" data-id="${e.id}">
+                    <div class="wsus__single_chat">
+                        <p class="messages">${e.body}</p>
+
+                    </div>
+                </div>`
+    }
 }
 
 function messageFormReset() {
@@ -523,6 +547,34 @@ function scrollToBottom(container) {
         scrollTop: $(container)[0].scrollHeight
     })
 }
+
+function initVenobox() {
+    $('.venobox').venobox();
+}
+
+//play message notification
+
+
+
+function playNotificationSound() {
+    const sound = new Audio(`/default/notification.mp3`);
+    sound.play();
+}
+
+window.Echo.private('message.' + auth_id)
+    .listen("Message", (e) => {
+        console.log(e);
+        if(getMessengerId() != e.from_id) {
+             updateContactItem(e.from_id);
+             playNotificationSound();
+        }
+        let message = receiveMessageCard(e);
+        if(getMessengerId() == e.from_id){
+            messageBoxContainer.append(message);
+            scrollToBottom(messageBoxContainer);
+        }
+    })
+
 /*
 *-----------------------------------------------
 *On Dom Load

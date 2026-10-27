@@ -9,6 +9,9 @@
     <meta name="id" content="">
     <meta name="csrf_token" content="{{ csrf_token() }}">
     <meta name="auth_id" content="{{ auth()->user()->id }}">
+    <meta name="url" content="{{ public_path() }}">
+
+
 <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
